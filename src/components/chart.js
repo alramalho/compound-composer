@@ -6,7 +6,17 @@ import NumInput from "./numinput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import {CartesianGrid, Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {HorizontalContainer, VerticalContainer} from "./styled-components";
-import {func} from "prop-types";
+import {withStyles} from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+
+const CssSelect = withStyles({
+  root: {
+    "& .MuiSelect-select	": {
+      color: `#f1a208`,
+      borderColor: `#f1a208`
+    },
+  }
+})(Select);
 
 
 const SELECT_OPTIONS = {
@@ -103,7 +113,7 @@ const Chart = () => {
         <VerticalContainer>
           <FormControl>
             <InputLabel id="demo-simple-x-select">X Axis</InputLabel>
-            <Select
+            <CssSelect
               native
               labelId="demo-simple-x-select"
               id="demo-simple-x-select"
@@ -116,7 +126,7 @@ const Chart = () => {
               <option value={SELECT_OPTIONS.AMOUNT}>Initial Amount</option>
               <option value={SELECT_OPTIONS.PROFIT}>Monthly profit</option>
               <option value={SELECT_OPTIONS.INJECTION}>Monthly injection</option>
-            </Select>
+            </CssSelect>
           </FormControl>
         </VerticalContainer>
         <VerticalContainer>
