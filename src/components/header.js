@@ -6,12 +6,12 @@ import {BigCircleSeparator, StyledContainer, StyledHeader} from "./styled-compon
 
 const Header = () => (
   <StyledHeader>
-    <Link
-      to={"https://alramalho.com"}
+    <a
+      href={"https://alramalho.com"}
       target={"__blank"}
       style={{color: "white", fontSize: "1rem", fontFamily: "Domine"}}>
       Al.
-    </Link>
+    </a>
     <StyledContainer>
       <BigCircleSeparator/>
     </StyledContainer>

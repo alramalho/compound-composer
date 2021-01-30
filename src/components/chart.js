@@ -4,10 +4,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import NumInput from "./numinput";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import styled from "styled-components";
 import {CartesianGrid, Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {HorizontalContainer, VerticalContainer} from "./styled-components";
 import {func} from "prop-types";
-import {init} from "../../.cache/navigation";
 
 
 const SELECT_OPTIONS = {
@@ -17,34 +16,20 @@ const SELECT_OPTIONS = {
   INJECTION: 'injection'
 }
 
-const HorizontalContainer = styled.div`
-  padding: 0 3rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+const DURATION_STEP = 0.5
+const AMOUNT_STEP = 1000
+const MONTHLY_PROFIT_STEP = 0.5
+const MONTHLY_INJECTION_STEP = 50
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`
-
-const VerticalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  > div {
-    margin: 1.5rem 0 0 0;
-  }
-`
 
 function generateProfit(durationInYears, initialAmmount, monthlyProfit, montlyInjection) {
-  return [...Array(durationInYears*12).keys()].reduce((accumulator) => {
-    return (accumulator + montlyInjection) * (1+(monthlyProfit/100))
+  return [...Array(durationInYears * 12).keys()].reduce((accumulator) => {
+    return (accumulator + montlyInjection) * (1 + (monthlyProfit / 100))
   }, initialAmmount)
 }
 
 const Chart = () => {
-  const [duration, setDuration] = useState(10)
+  const [duration, setDuration] = useState(5)
   const [initialAmount, setInitialAmount] = useState(10000)
   const [profit, setProfit] = useState(0.5)
   const [injection, setInjection] = useState(12345)
@@ -60,20 +45,30 @@ const Chart = () => {
   ])
 
   useEffect(() => {
-    setXAxisData(createData(duration, 0.5))
-  }, [duration])
-
-  function createData(xValue, step) {
-    const data = []
-    for (let i = 0; i <= 6; i++) {
-      const durationInYears = parseInt(xValue) + i*step
-      data.push({
-        name: durationInYears + ' years',
-        duration: generateProfit(durationInYears, 10000, 2, 100)
-      })
+    const newData = []
+    switch (xAxis) {
+      case SELECT_OPTIONS.DURATION:
+        for (let i = 0; i <= 6; i++) {
+          const value = parseInt(duration) - 3*DURATION_STEP + i*DURATION_STEP
+          newData.push({
+            name: value + ' years',
+            total: generateProfit(value, 10000, 2, 100)
+          })
+        }
+        setXAxisData(newData)
+        break;
+      case SELECT_OPTIONS.AMOUNT:
+        for (let i = 0; i <= 6; i++) {
+          const value = parseInt(initialAmount) - 3*AMOUNT_STEP + i*AMOUNT_STEP
+          newData.push({
+            name: value + '€',
+            total: generateProfit(duration, initialAmount, 2, 100) + " €"
+          })
+        }
+        setXAxisData(newData)
     }
-    return data
-  }
+  }, [duration, initialAmount, profit, injection])
+
 
   return (
     <>
@@ -87,9 +82,10 @@ const Chart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3"/>
-          <Area type="monotone" dataKey="duration" stroke="#f1a208" fill="#f1a208" />
+          <Area type="monotone" dataKey="total" stroke="#f1a208" fill="#f1a208"/>
           <XAxis dataKey="name"/>
-          <YAxis/>
+          <YAxis unit={"€"}/>
+          <Tooltip formatter={(value) => parseInt(value).toString() + '€'}/>
         </AreaChart>
       </ResponsiveContainer>
       <HorizontalContainer>

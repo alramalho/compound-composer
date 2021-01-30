@@ -10,6 +10,27 @@ export const BigCircleSeparator = () => (
   </svg>
 )
 
+
+export const HorizontalContainer = styled.div`
+  padding: 0 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
+
+export const VerticalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    margin: 1.5rem 0 0 0;
+  }
+`
+
 export const Content = styled.div`
   position: relative;
   bottom: 0;
