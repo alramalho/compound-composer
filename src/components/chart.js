@@ -1,30 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
 import NumInput from "./numinput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import {CartesianGrid, Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import {HorizontalContainer, VerticalContainer} from "./styled-components";
-import {withStyles} from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-
-const CssSelect = withStyles({
-  root: {
-    "& .MuiSelect-select	": {
-      color: `#f1a208`,
-      borderColor: `#f1a208`
-    },
-  }
-})(Select);
-
-
-const SELECT_OPTIONS = {
-  PROFIT: 'profit',
-  DURATION: 'duration',
-  AMOUNT: 'amount',
-  INJECTION: 'injection'
-}
+import {HorizontalContainer, SELECT_OPTIONS, VerticalContainer} from "./styled-components";
+import XAxisSelect from "./select";
 
 const DURATION_STEP = 0.5
 const AMOUNT_STEP = 1000
@@ -70,7 +49,6 @@ const Chart = () => {
     }
     for (let i = 0; i <= 6; i++) {
       const steppedValue = Number(value) - 3 * step + i * step
-      // console.log(`step: ${step}, value: ${value}, steppedValue: ${steppedValue}`)
       newData.push({
         name: `${steppedValue}${option === SELECT_OPTIONS.DURATION ? ' years' : option === SELECT_OPTIONS.PROFIT ? '%' : '€'}`,
         total: generateProfit(
@@ -81,13 +59,11 @@ const Chart = () => {
         )
       })
     }
-    console.log("Data generated: ", newData)
     return newData
   }
 
   useEffect(() => {
     setXAxisData(generateNewData(xAxisOption))
-    console.log(`the enum selected was ${xAxisOption}`)
   }, [duration, initialAmount, profit, injection, xAxisOption])
 
 
@@ -111,23 +87,10 @@ const Chart = () => {
       </ResponsiveContainer>
       <HorizontalContainer>
         <VerticalContainer>
-          <FormControl>
-            <InputLabel id="demo-simple-x-select">X Axis</InputLabel>
-            <CssSelect
-              native
-              labelId="demo-simple-x-select"
-              id="demo-simple-x-select"
-              value={xAxisOption}
-              onChange={event => {
-                setXAxisOption(event.target.value)
-              }}
-            >
-              <option value={SELECT_OPTIONS.DURATION}>Duration of investment</option>
-              <option value={SELECT_OPTIONS.AMOUNT}>Initial Amount</option>
-              <option value={SELECT_OPTIONS.PROFIT}>Monthly profit</option>
-              <option value={SELECT_OPTIONS.INJECTION}>Monthly injection</option>
-            </CssSelect>
-          </FormControl>
+          <XAxisSelect
+            value={xAxisOption}
+            onChange={value => {setXAxisOption(value)}}
+          />
         </VerticalContainer>
         <VerticalContainer>
           <NumInput

@@ -3,6 +3,14 @@ import React from "react";
 
 export const upperBackgroundColor = `${'#22313f'}`
 
+export const SELECT_OPTIONS = {
+  PROFIT: 'profit',
+  DURATION: 'duration',
+  AMOUNT: 'amount',
+  INJECTION: 'injection'
+}
+
+
 export const BigCircleSeparator = () => (
   <svg id="bigHalfCircle" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100"
        viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -34,7 +42,7 @@ export const VerticalContainer = styled.div`
 export const Content = styled.div`
   position: relative;
   bottom: 0;
-  transform: translateY(-25vh);
+  transform: translateY(-35vh);
   transition-duration: 0.35s;
   left: 0;
   right: 0;
