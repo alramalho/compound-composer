@@ -17,6 +17,7 @@ const IndexPage = () => {
       <Header/>
       <Content>
         <h1 style={{margin: `0 auto 2rem auto`}}> Compound composer </h1>
+        <p style={{margin: `0 auto 2rem auto`, maxWidth: '800px'}}> With compound composer you can accurately and easily visualize your savings or investing strategy for the future. </p>
         <ChartContainer>
           <Chart/>
         </ChartContainer>
