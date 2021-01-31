@@ -1,10 +1,10 @@
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import React from "react";
-import {inputColor, SELECT_OPTIONS} from "./styled-components";
+import {SELECT_OPTIONS} from "./styled-components";
 import Select from "@material-ui/core/Select";
 
-const XAxisSelect = (value, onChange) => {
+const XAxisSelect = ({value, onChange}) => {
   return (
     <FormControl>
       <InputLabel id="demo-simple-x-select">X Axis</InputLabel>
