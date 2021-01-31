@@ -11,12 +11,13 @@ const AMOUNT_STEP = 1000
 const MONTHLY_PROFIT_STEP = 0.5
 const MONTHLY_INJECTION_STEP = 50
 
-function generateProfit(durationInYears, initialAmount, monthlyProfit, monthlyInjection, taxValue) {
+function generateValues(durationInYears, initialAmount, monthlyProfit, monthlyInjection, taxValue) {
   const total = Array(((durationInYears) || 0)*12).fill(1).reduce((accumulator) => {
     return (accumulator + monthlyInjection) * (1 + (monthlyProfit / 100))
   }, initialAmount)
   const profit = total - (initialAmount + durationInYears*12 * monthlyInjection)
-  return total - ((taxValue/100)*profit )
+
+  return [total, (total - ((taxValue/100)*profit )), (taxValue/100)*profit]
 }
 
 const Chart = () => {
@@ -52,15 +53,18 @@ const Chart = () => {
     }
     for (let i = 0; i <= 6; i++) {
       const steppedValue = Number(value) - 3 * step + i * step
+      const [total, liquid, taxes] = generateValues(
+        option === SELECT_OPTIONS.DURATION ? steppedValue : duration,
+        option === SELECT_OPTIONS.AMOUNT ? steppedValue : initialAmount,
+        option === SELECT_OPTIONS.PROFIT? steppedValue : profit,
+        option === SELECT_OPTIONS.INJECTION ? steppedValue : injection,
+        taxValue,
+      )
       newData.push({
         name: `${steppedValue}${option === SELECT_OPTIONS.DURATION ? ' years' : option === SELECT_OPTIONS.PROFIT ? '%' : '€'}`,
-        total: generateProfit(
-          option === SELECT_OPTIONS.DURATION ? steppedValue : duration,
-          option === SELECT_OPTIONS.AMOUNT ? steppedValue : initialAmount,
-          option === SELECT_OPTIONS.PROFIT? steppedValue : profit,
-          option === SELECT_OPTIONS.INJECTION ? steppedValue : injection,
-          taxValue,
-        )
+        total: total,
+        liquid: liquid,
+        taxCutdown: taxes
       })
     }
     return newData
@@ -83,7 +87,9 @@ const Chart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3"/>
-          <Area type="monotone" dataKey="total" stroke="#f1a208" fill="#f1a208"/>
+          <Area type="monotone" dataKey="total" stroke={'#f1bf08'} fill={'#f1bf08'}/>
+          <Area type="monotone" dataKey="liquid" stroke={'#f1a208'} fill={'#f1a208'}/>
+          <Area type="monotone" dataKey="taxCutdown" stroke={'#F1431A'} fill={'#f1431a'}/>
           <XAxis dataKey="name"/>
           <YAxis form unit={'€'} width={70}/>
           <Tooltip formatter={(value) => `${parseInt(value)}€`}/>
