@@ -4,25 +4,28 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import {CartesianGrid, Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {HorizontalContainer, SELECT_OPTIONS, VerticalContainer} from "./styled-components";
 import XAxisSelect from "./select";
+import TaxCheckbox from "./tax-checkbox";
 
 const DURATION_STEP = 0.5
 const AMOUNT_STEP = 1000
 const MONTHLY_PROFIT_STEP = 0.5
 const MONTHLY_INJECTION_STEP = 50
 
-function generateProfit(durationInYears, initialAmount, monthlyProfit, monthlyInjection) {
-  const result = Array(((durationInYears) || 0)*12).fill(1).reduce((accumulator) => {
+function generateProfit(durationInYears, initialAmount, monthlyProfit, monthlyInjection, taxValue) {
+  const total = Array(((durationInYears) || 0)*12).fill(1).reduce((accumulator) => {
     return (accumulator + monthlyInjection) * (1 + (monthlyProfit / 100))
   }, initialAmount)
-  console.log(`total: for duration ${durationInYears}, amount ${initialAmount}, profit ${monthlyProfit}, injection ${monthlyInjection} `, result)
-  return result
+  const profit = total - (initialAmount + durationInYears*12 * monthlyInjection)
+  return total - ((taxValue/100)*profit )
 }
 
 const Chart = () => {
   const [duration, setDuration] = useState(3)
-  const [initialAmount, setInitialAmount] = useState(10001)
-  const [profit, setProfit] = useState(2)
-  const [injection, setInjection] = useState(400)
+  const [initialAmount, setInitialAmount] = useState(15000)
+  const [profit, setProfit] = useState(1.5)
+  const [injection, setInjection] = useState(500)
+  const [taxValue, setTaxValue] = useState(28)
+
   const [xAxisOption, setXAxisOption] = useState(SELECT_OPTIONS.AMOUNT)
   const [xAxisData, setXAxisData] = useState(null)
 
@@ -56,6 +59,7 @@ const Chart = () => {
           option === SELECT_OPTIONS.AMOUNT ? steppedValue : initialAmount,
           option === SELECT_OPTIONS.PROFIT? steppedValue : profit,
           option === SELECT_OPTIONS.INJECTION ? steppedValue : injection,
+          taxValue,
         )
       })
     }
@@ -64,7 +68,7 @@ const Chart = () => {
 
   useEffect(() => {
     setXAxisData(generateNewData(xAxisOption))
-  }, [duration, initialAmount, profit, injection, xAxisOption])
+  }, [duration, initialAmount, profit, injection, taxValue, xAxisOption])
 
 
   return (
@@ -98,28 +102,28 @@ const Chart = () => {
             onChange={(value) => {setDuration(value > 100 ? 100 : value < 0 ? 0 : value)}}
             label={"Duration of investment"}
             endAdornment={<InputAdornment position="end">years</InputAdornment>}
-            labelWidth={200}
           />
           <NumInput
             value={initialAmount}
             onChange={(value) => setInitialAmount(parseInt(value))}
             label="Initial amount"
             startAdornment={<InputAdornment position="start">€</InputAdornment>}
-            labelWidth={120}
           />
           <NumInput
             value={profit}
             onChange={(value) => setProfit(parseFloat(value))}
             label="Monthly profit"
             startAdornment={<InputAdornment position="start">%</InputAdornment>}
-            labelWidth={130}
           />
           <NumInput
             value={injection}
             onChange={(value) => setInjection(parseInt(value))}
             label="Monthly injection"
             startAdornment={<InputAdornment position="start">€</InputAdornment>}
-            labelWidth={150}
+          />
+          <TaxCheckbox
+            value={taxValue}
+            onChange={(value) => setTaxValue(value)}
           />
         </VerticalContainer>
       </HorizontalContainer>

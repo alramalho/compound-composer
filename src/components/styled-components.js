@@ -3,6 +3,8 @@ import React from "react";
 
 export const upperBackgroundColor = `${'#22313f'}`
 
+export const inputColor = `#f1a208`
+
 export const SELECT_OPTIONS = {
   PROFIT: 'profit',
   DURATION: 'duration',
