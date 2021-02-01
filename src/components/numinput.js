@@ -1,11 +1,10 @@
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 import {inputColor} from "./styled-components";
 import TextField from "@material-ui/core/TextField";
 
-const CssOutlinedInput = withStyles({
+const CssTextField = withStyles({
   root: {
     "& label.Mui-focused": {
       color: inputColor
@@ -24,7 +23,8 @@ const CssOutlinedInput = withStyles({
 const NumInput = (props) => {
   return (
     <FormControl variant="outlined">
-      <CssOutlinedInput
+      <CssTextField
+        helperText={props.helperText}
         disabled={props.disabled}
         label={props.label}
         variant="outlined"
@@ -32,6 +32,9 @@ const NumInput = (props) => {
         onChange={(event) => props.onChange(event.target.value)}
         id={props.id}
         type='number'
+        style={{
+          maxWidth: 300
+        }}
         InputProps={{
           startAdornment: props.startAdornment,
           endAdornment: props.endAdornment

@@ -8,22 +8,26 @@ import TaxCheckbox from "./tax-checkbox";
 
 const DURATION_STEP = 0.5
 const AMOUNT_STEP = 1000
-const MONTHLY_PROFIT_STEP = 0.5
+const PROFIT_STEP = 1
 const MONTHLY_INJECTION_STEP = 50
 
-function generateValues(durationInYears, initialAmount, monthlyProfit, monthlyInjection, taxValue) {
+function generateValues(durationInYears, initialAmount, yearlyProfit, monthlyInjection, taxValue) {
+  const monthlyProfit = yearlyProfit / 12
   const total = Array(((durationInYears) || 0)*12).fill(1).reduce((accumulator) => {
     return (accumulator + monthlyInjection) * (1 + (monthlyProfit / 100))
   }, initialAmount)
-  const profit = total - (initialAmount + durationInYears*12 * monthlyInjection)
 
-  return [total, (total - ((taxValue/100)*profit )), (taxValue/100)*profit]
+  const profit = total - (initialAmount + durationInYears*12 * monthlyInjection)
+  const taxCutdown = (taxValue/100)*profit;
+  const liquid = total - taxCutdown;
+
+  return [total, liquid, taxCutdown]
 }
 
 const Chart = () => {
   const [duration, setDuration] = useState(3)
   const [initialAmount, setInitialAmount] = useState(15000)
-  const [profit, setProfit] = useState(1.5)
+  const [profit, setProfit] = useState(18)
   const [injection, setInjection] = useState(500)
   const [taxValue, setTaxValue] = useState(28)
 
@@ -43,7 +47,7 @@ const Chart = () => {
         value = initialAmount;
         break;
       case SELECT_OPTIONS.PROFIT:
-        step = MONTHLY_PROFIT_STEP;
+        step = PROFIT_STEP;
         value = profit;
         break
       case SELECT_OPTIONS.INJECTION:
@@ -118,7 +122,8 @@ const Chart = () => {
           <NumInput
             value={profit}
             onChange={(value) => setProfit(parseFloat(value))}
-            label="Monthly profit"
+            label="Yearly profit"
+            helperText={"The profit is applied every month, to take into account your monthly injection."}
             startAdornment={<InputAdornment position="start">%</InputAdornment>}
           />
           <NumInput
