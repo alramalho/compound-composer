@@ -57,14 +57,14 @@ export const Content = styled.div`
 
 export const ChartContainer = styled.div`
   background-color: #fdfdfd;
-  border-radius: 15%;
+  border-radius: 50px;
   padding: 4rem 2rem;
   box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 
   @media (max-width: 950px) {
     padding: 4rem 1rem;
     margin: 0 2rem;
-    border-radius: 10%;
+    border-radius: 30px;
 
   }
   @media (max-width: 400px) {
