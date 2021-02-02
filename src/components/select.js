@@ -19,7 +19,7 @@ const XAxisSelect = ({value, onChange}) => {
       >
         <option value={SELECT_OPTIONS.DURATION}>Duration of investment</option>
         <option value={SELECT_OPTIONS.AMOUNT}>Initial Amount</option>
-        <option value={SELECT_OPTIONS.PROFIT}>Monthly profit</option>
+        <option value={SELECT_OPTIONS.PROFIT}>Yearly profit</option>
         <option value={SELECT_OPTIONS.INJECTION}>Monthly injection</option>
       </Select>
     </FormControl>
