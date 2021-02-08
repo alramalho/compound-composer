@@ -13,7 +13,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <SEO title="Compound Composer"/>
+      <SEO title="Al Ramalho"/>
       <Header/>
       <Content>
         <h1 style={{margin: `0 auto 2rem auto`}}> Compound composer </h1>
