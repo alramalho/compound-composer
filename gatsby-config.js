@@ -24,18 +24,21 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `Compound Composer`,
+        short_name: `Compound Composer`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#ececee`,
+        theme_color: `#22323f`,
         display: `minimal-ui`,
-        icon: `src/images/me.png`, // This path is relative to the root of the site.
+        icon: `src/images/me.png`,
       },
     },
     { resolve: `gatsby-plugin-styled-components` },
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-offline`,
+      options: {
+        precachePages: [`/`],
+      },
+    },
   ],
 }
