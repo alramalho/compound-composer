@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Compound Composer`,
+    siteUrl: `https://www.compound-composer.com`,
     description: `Calculate your savings over time with the beautiful power of compound interests.`,
     author: `@alramalho`,
   },

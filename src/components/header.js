@@ -1,6 +1,5 @@
 import PropTypes from "prop-types"
 import React from "react"
-import {Link} from "gatsby";
 import {BigCircleSeparator, StyledContainer, StyledHeader} from "./styled-components";
 
 
