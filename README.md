@@ -2,4 +2,4 @@
 
 Easily visualize your investment plan.
 
-http://compound-composer.alramalho.com/
+https://compound-composer.com/
